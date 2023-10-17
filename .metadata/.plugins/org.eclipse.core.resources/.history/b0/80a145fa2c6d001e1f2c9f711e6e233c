@@ -316,9 +316,8 @@ public class MainApp {
 								sc.nextLine();
 								salirMenuPrincipal = true;
 								salirSubMenu5 = true;
-								System.err.println("\n" + "SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
+								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
 							}
-							sc.nextLine();
 						} while (salirSubMenu5);
 					} else {
 						salirMenuPrincipal = Menu.volverMenu();
@@ -463,6 +462,7 @@ public class MainApp {
 
 					if (validador) {
 						do {
+							sc.nextLine();
 							salirCase11 = false;
 							int opcion11 = 0;
 							try {
@@ -483,6 +483,7 @@ public class MainApp {
 									salirCase11 = true;
 
 								} else if (opcion11 == 2) {
+
 									System.out.print("INGRESE NUEVO APELLIDO: ");
 									sc.nextLine();
 									String nuevoApellido = sc.nextLine();
@@ -524,7 +525,6 @@ public class MainApp {
 								salirSubMenu11 = true;
 								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 5");
 							}
-							sc.nextLine();
 						} while (salirSubMenu11);
 					} else {
 						salirMenuPrincipal = Menu.volverMenu();

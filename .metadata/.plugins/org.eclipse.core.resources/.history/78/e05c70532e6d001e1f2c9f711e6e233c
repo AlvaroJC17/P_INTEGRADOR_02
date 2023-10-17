@@ -308,7 +308,7 @@ public class ArticulosDAO implements IOperacionesDB {
 					stmt.close();
 					conexion.commit();
 					conexion.close();
-					System.out.println("\n" + "NOMBRE ACTUALIZADO CORRECTAMENTE... PRESIONE ENTER PARA CONTINUAR");
+					System.out.println("\n" + "NOMBRE ACTUALIZADO CORRECTAMENTE...");
 
 				} else if (seleccion == 2) {
 					conexion.setAutoCommit(false);
@@ -332,7 +332,7 @@ public class ArticulosDAO implements IOperacionesDB {
 					stmt.close();
 					conexion.commit();
 					conexion.close();
-					System.out.println("\n" + "DESCRIPCION ACTUALIZADA CORRECTAMENTE... PRESIONE ENTER PARA CONTINUAR");
+					System.out.println("\n" + "DESCRIPCION ACTUALIZADA CORRECTAMENTE...");
 				}
 			} else {
 				System.err.println("\n" + "EL CODIGO DEL ARTICULO NO EXISTE EN LA BASE DE DATOS...");

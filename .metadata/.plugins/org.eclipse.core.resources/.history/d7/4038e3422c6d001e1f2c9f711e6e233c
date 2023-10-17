@@ -316,9 +316,8 @@ public class MainApp {
 								sc.nextLine();
 								salirMenuPrincipal = true;
 								salirSubMenu5 = true;
-								System.err.println("\n" + "SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
+								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
 							}
-							sc.nextLine();
 						} while (salirSubMenu5);
 					} else {
 						salirMenuPrincipal = Menu.volverMenu();
@@ -483,6 +482,7 @@ public class MainApp {
 									salirCase11 = true;
 
 								} else if (opcion11 == 2) {
+
 									System.out.print("INGRESE NUEVO APELLIDO: ");
 									sc.nextLine();
 									String nuevoApellido = sc.nextLine();
@@ -507,7 +507,8 @@ public class MainApp {
 										//Mismo metodo que el anterior pero ahora actualiza el DNI del empleado en la base de datos
 										empleadoDB.actualizarArticulosYUsuarios(nuevoDNI, codigo11, opcion11);
 									} catch (Exception e) {
-										System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+										System.err.println(
+												"\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
 									} finally {
 										salirSubMenu11 = true;
 										salirCase11 = true;
@@ -524,7 +525,6 @@ public class MainApp {
 								salirSubMenu11 = true;
 								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 5");
 							}
-							sc.nextLine();
 						} while (salirSubMenu11);
 					} else {
 						salirMenuPrincipal = Menu.volverMenu();

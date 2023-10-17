@@ -316,7 +316,7 @@ public class MainApp {
 								sc.nextLine();
 								salirMenuPrincipal = true;
 								salirSubMenu5 = true;
-								System.err.println("\n" + "SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
+								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
 							}
 							sc.nextLine();
 						} while (salirSubMenu5);

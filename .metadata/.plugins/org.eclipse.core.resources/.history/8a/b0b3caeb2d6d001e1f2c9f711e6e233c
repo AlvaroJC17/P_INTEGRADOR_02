@@ -177,7 +177,7 @@ public class EmpleadoDAO implements IOperacionesDB {
 					stmt.close();
 					conexion.commit();
 					conexion.close();
-					System.out.println("\n" + "NOMBRE ACTUALIZADO CORRECTAMENTE... PRESIONE ENTER PARA CONTINUAR.");
+					System.out.println("\n" + "NOMBRE ACTUALIZADO CORRECTAMENTE...");
 				
 			}else if (seleccion == 2) {
 					conexion.setAutoCommit(false);
@@ -189,7 +189,7 @@ public class EmpleadoDAO implements IOperacionesDB {
 					stmt.close();
 					conexion.commit();
 					conexion.close();
-					System.out.println("\n" + "APELLIDO ACTUALIZADO CORRECTAMENTE... PRESIONE ENTER PARA CONTINUAR");
+					System.out.println("\n" + "APELLIDO ACTUALIZADO CORRECTAMENTE...");
 				
 			}else if (seleccion == 3) {
 					conexion.setAutoCommit(false);
@@ -201,7 +201,7 @@ public class EmpleadoDAO implements IOperacionesDB {
 					stmt.close();
 					conexion.commit();
 					conexion.close();
-					System.out.println("\n" + "CARGO ACTUALIZADO CORRECTAMENTE... PRESIONE ENTER PARA CONTINUAR");
+					System.out.println("\n" + "CARGO ACTUALIZADO CORRECTAMENTE...");
 
 			}else if (seleccion == 4) {
 					conexion.setAutoCommit(false);
