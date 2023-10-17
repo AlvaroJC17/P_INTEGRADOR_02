@@ -1,0 +1,552 @@
+package main.app_to;
+
+import operaciones_dao.Menu;
+import java.util.Scanner;
+
+import computacionaj_vo.ArticulosVO;
+import computacionaj_vo.EmpleadoVO;
+import operaciones_dao.ArticulosDAO;
+import operaciones_dao.EmpleadoDAO;
+
+public class MainApp {
+
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		int eleccion;
+		boolean salirMenuPrincipal = false;
+		ArticulosDAO dataBaseOp = new ArticulosDAO();
+		EmpleadoDAO empleadoDB = new EmpleadoDAO();
+		Menu valoresMenu = new Menu();
+
+		do {
+			eleccion = 0;
+
+			try {
+				System.out.println("\n **** COMPUTACION AJ ****");
+				System.out.println("\n*** ELIJA UNA OPCION DEL MENU ***");
+				System.out.println("\n1.  INGRESAR NUEVO ARTICULO" + "\n" + "2.  ELIMINAR ARTICULO" + "\n"
+						+ "3.  AUMENTAR STOCK" + "\n" + "4.  REALIZAR UNA VENTA" + "\n" + "5.  ACTUALIZAR ARTICULOS "
+						+ "\n" + "6.  VER STOCK" + "\n" + "7.  VER VENTAS" + "\n" + "8.  ELIMINAR VENTA "
+						+ "\n" + "9.  INGRESAR NUEVO EMPLEADO " + "\n" + "10. ELIMINAR EMPLEADO" + "\n"
+						+ "11. ACTUALIZAR EMPLEADO" + "\n" + "12. VER EMPLEADOS" + "\n" + "13. SALIR");
+
+				eleccion = sc.nextInt();
+				if (eleccion > 0 && eleccion <= 13) {
+					salirMenuPrincipal = false;
+				} else {
+					System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 13");
+					salirMenuPrincipal = true;
+				}
+			} catch (Exception e) {
+				salirMenuPrincipal = true;
+				System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 13");
+			}
+			sc.nextLine();
+
+			switch (eleccion) {
+			
+			case 1: // ingresar articulos
+				boolean salirSubMenu1 = false;
+				boolean salir;
+				boolean salirCase1;
+				String nombre = null;
+				String descripcion = null;
+				double precio = 0;
+				int stock1 = 0;
+				int codigo1 = 0;
+
+				do {
+					System.out.print("INGRESE NOMBRE DEL ARTICULO: ");
+					nombre = sc.nextLine();
+
+					do {
+						salir = false;
+						try {
+							System.out.print("INGRESE PRECIO DEL ARTICULO: ");
+							precio = sc.nextDouble();
+						} catch (Exception e) {
+							salir = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS 0 DECIMALES..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir);
+
+					do {
+						salir = false;
+						try {
+							System.out.print("INGRESE LA CANTIDAD DE STOCK DISPONIBLE: ");
+							stock1 = sc.nextInt();
+						} catch (Exception e) {
+							salir = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir);
+
+					System.out.print("INGRESE UNA DESCRIPCION DEL ARTICULO: ");
+					descripcion = sc.nextLine();
+					
+					//metodo para ingresar al articulo a la base de datos
+					dataBaseOp.ingresarNuevo(new ArticulosVO(nombre, precio, codigo1, stock1, descripcion));
+					
+					//metodos para salir y entrar al submenu, al case 1 y al menu principal
+					do {
+						valoresMenu = Menu.volverSubmenu("1. AGREGAR OTRO ARTICULO");
+						salirSubMenu1 = valoresMenu.isSalirSubMenu();
+						salirCase1 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu1);
+				} while (salirCase1);
+				break;
+
+			case 2: //Eliminar articulo
+				boolean salirSubMenu2 = false;
+				boolean salir2;
+				int codigo2 = 0;
+				boolean salirCase2 = false;
+				do {
+					do {
+						salir2 = false;
+						try {
+							System.out.print("INGRESE CODIGO DEL ARTICULO: ");
+							codigo2 = sc.nextInt();
+						} catch (Exception e) {
+							salir2 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir2);
+					
+					//metodo para eliminar un articulo de la base de datos
+					dataBaseOp.eliminar(codigo2);
+
+					do {
+						valoresMenu = Menu.volverSubmenu("1. ELIMINAR OTRO ARTICULO");
+						salirSubMenu2 = valoresMenu.isSalirSubMenu();
+						salirCase2 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu2);
+				} while (salirCase2);
+				break;
+
+			case 3: // Aumentar el stock
+				boolean salirSubMenu3 = false;
+				boolean salir3;
+				int codigo3 = 0;
+				int stock2 = 0;
+				boolean salirCase3 = false;
+				do {
+					do {
+						salir3 = false;
+						try {
+							System.out.print("INGRESE CODIGO DEL ARTICULO AL CUAL QUIERE AUMENTAR EL STOCK: ");
+							codigo3 = sc.nextInt();
+						} catch (Exception e) {
+							salir3 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir3);
+
+					do {
+						salir3 = false;
+						try {
+							System.out.print("INGRESE LA CANTIDAD DE UNIDADES A AUMENTAR: ");
+							stock2 = sc.nextInt();
+						} catch (Exception e) {
+							salir3 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir3);
+
+					// metodo que se encarga de sumar stock a los articulos
+					dataBaseOp.agregarStock(new ArticulosVO(codigo3, stock2));
+
+					do {
+						valoresMenu = Menu.volverSubmenu("1. AUMENTAR STOCK DE OTRO ARTICULO");
+						salirSubMenu3 = valoresMenu.isSalirSubMenu();
+						salirCase3 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu3);
+				} while (salirCase3);
+				break;
+
+			case 4: // Realizar una venta
+				boolean salirSubMenu4 = false;
+				boolean salir4;
+				int codigo4 = 0;
+				int codigoEmpleado = 0;
+				int cantidad = 0;
+				boolean salirCase4 = false;
+				boolean validador1 = false;
+				boolean validador2 = false;
+				do {
+					do {
+						salir4 = false;
+						try {
+							System.out.print("INGRESE CODIGO DEL ARTICULO A VENDER: ");
+							codigo4 = sc.nextInt();
+						} catch (Exception e) {
+							salir4 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir4);
+
+					// Meotod para visualizar las caracteristicas del articulo seleccionado
+					validador1 = dataBaseOp.verArticuloYUsuario(codigo4);
+
+					if (validador1) {
+						do {
+							salir4 = false;
+							try {
+								System.out.print("INGRESE LA CANTIDAD DE ARTICULOS A VENDER: ");
+								cantidad = sc.nextInt();
+							} catch (Exception e) {
+								salir4 = true;
+								System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+							}
+							sc.nextLine();
+						} while (salir4);
+
+						do {
+							salir4 = false;
+							try {
+								System.out.print("INGRESE EL CODIGO DEL VENDEDOR: ");
+								codigoEmpleado = sc.nextInt();
+							} catch (Exception e) {
+								salir4 = true;
+								System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+							}
+							sc.nextLine();
+						} while (salir4);
+						
+						// Mismo metodo, pero ahora visualizamos las caracteristicas de un empleado
+						validador2 = empleadoDB.verArticuloYUsuario(codigoEmpleado);
+
+						if (validador2) {
+							//metodo para registar la venta en la base de datos y actualizar el stock
+							dataBaseOp.vender(new ArticulosVO(codigo4, cantidad), codigoEmpleado);
+						}
+
+					} else {
+						salirSubMenu4 = true;
+					}
+					do {
+						valoresMenu = Menu.volverSubmenu("1. REALIZAR NUEVA VENTA");
+						salirSubMenu4 = valoresMenu.isSalirSubMenu();
+						salirCase4 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu4);
+				} while (salirCase4);
+				break;
+
+			case 5: // Actualizar articulos
+				boolean salirSubMenu5 = false;
+				boolean salir5;
+				int codigo5 = 0;
+				boolean salirCase5 = false;
+				do {
+					do {
+						salir5 = false;
+						try {
+							System.out.print("INGRESE EL CODIGO DEL ARTICULO A ACTUALIZAR: ");
+							codigo5 = sc.nextInt();
+						} catch (Exception e) {
+							salir5 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir5);
+					
+					// visualizamos las caracteristicas del articulo
+					boolean validador = dataBaseOp.verArticuloYUsuario(codigo5);
+
+					if (validador) {
+						do {
+							salirCase5 = false;
+							int opcion5 = 0;
+							try {
+								System.out.println("\n1. ACTUALIZAR NOMBRE.");
+								System.out.println("2. ACTUALIZAR PRECIO.");
+								System.out.println("3. ACTUALIZAR DESCRIPCION.");
+								System.out.println("4. VOLVER AL MENU");
+								opcion5 = sc.nextInt();
+
+								if (opcion5 == 1) {
+									sc.nextLine();
+									System.out.print("INGRESE NUEVO NOMBRE: ");
+									String nuevoNombre = sc.nextLine();
+									//metodo para actualizar el nombre en la base de datos
+									dataBaseOp.actualizarArticulosYUsuarios(nuevoNombre, codigo5, opcion5);
+									salirSubMenu5 = true;
+									salirCase5 = true;
+
+								} else if (opcion5 == 2) {
+									try {
+										System.out.print("INGRESE NUEVO PRECIO: ");
+										Double nuevoPrecio = sc.nextDouble();
+										//metodo para actualizar el precio en la base de datos
+										dataBaseOp.actualizarArticulosYUsuarios(nuevoPrecio, codigo5, opcion5);
+									} catch (Exception e) {
+										System.err.println("SOLO SE PERMITEN NUMEROS ENTEROS O DECIMALES");
+									} finally {
+										salirSubMenu5 = true;
+										salirCase5 = true;
+									}
+
+								} else if (opcion5 == 3) {
+									sc.nextLine();
+									System.out.print("INGRESE NUEVA DESCRIPCION: ");
+									String nuevaDescripcion = sc.nextLine();
+									//metodo para actualizar la descripcion en la base de datos
+									dataBaseOp.actualizarArticulosYUsuarios(nuevaDescripcion, codigo5, opcion5);
+									salirSubMenu5 = true;
+									salirCase5 = true;
+
+								} else if (opcion5 == 4) {
+									salirSubMenu5 = false;
+									salirMenuPrincipal = true;
+								} else {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								sc.nextLine();
+								salirMenuPrincipal = true;
+								salirSubMenu5 = true;
+								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
+							}
+						} while (salirSubMenu5);
+					} else {
+						salirMenuPrincipal = Menu.volverMenu();
+					}
+				} while (salirCase5);
+				break;
+
+			case 6: // ver stock
+				//metodo para consultar la tabla de articulos de la base de datos
+				dataBaseOp.verListadoArticulosYUsuarios();
+				salirMenuPrincipal = Menu.volverMenu();
+				break;
+
+			case 7: //ver ventas
+				//metodo para ver la tabla de ventas de la base de datos
+				empleadoDB.verVentas();
+				salirMenuPrincipal = Menu.volverMenu();
+				break;
+
+			case 8: //Eliminar venta
+				boolean salirSubMenu8 = false;
+				boolean salir8;
+				int codigo8 = 0;
+				boolean salirCase8 = false;
+				do {
+					do {
+						salir8 = false;
+						try {
+							System.out.print("INGRESE CODIGO DE LA VENTA A ELIMINAR: ");
+							codigo8 = sc.nextInt();
+						} catch (Exception e) {
+							salir8 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir8);
+
+					//Metodo para eliminar la venta que elijamos de la tabla ventas de la base de datos
+					empleadoDB.eliminarVenta(codigo8);
+
+					do {
+						valoresMenu = Menu.volverSubmenu("1. ELIMINAR OTRA VENTA");
+						salirSubMenu8 = valoresMenu.isSalirSubMenu();
+						salirCase8 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu8);
+				} while (salirCase8);
+				break;
+				
+			case 9: //Ingresar nuevo empleado
+				boolean salirSubMenu9 = false;
+				boolean salir9;
+				String apellido;
+				String cargo;
+				int dni = 0;
+				int codigo9 = 0;
+				boolean salirCase9 = false;
+				do {
+					System.out.print("INGRESE NOMBRE DEL NUEVO EMPLEADO: ");
+					nombre = sc.nextLine();
+
+					System.out.print("INGRESE APELLIDO DEL NUEVO EMPLEADO: ");
+					apellido = sc.nextLine();
+
+					System.out.print("INGRESE CARGO DEL NUEVO EMPLEADO: ");
+					cargo = sc.nextLine();
+
+					do {
+						salir9 = false;
+						try {
+							System.out.print("INGRESE DNI DEL NUEVO EMPLEADO: ");
+							dni = sc.nextInt();
+						} catch (Exception e) {
+							salir9 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir9);
+					
+					//Metodo para ingresar un nuevo empleado a la base de datos
+					empleadoDB.ingresarNuevo(new EmpleadoVO(nombre, apellido, cargo, codigo9, dni));
+
+					do {
+						valoresMenu = Menu.volverSubmenu("1. AGREGAR OTRO EMPLEADO");
+						salirSubMenu9 = valoresMenu.isSalirSubMenu();
+						salirCase9 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu9);
+				} while (salirCase9);
+				break;
+
+			case 10: //Eliminar empleado
+				boolean salirSubMenu10 = false;
+				boolean salir10;
+				int codigo10 = 0;
+				boolean salirCase10 = false;
+				do {
+					do {
+						salir10 = false;
+						try {
+							System.out.print("INGRESE CODIGO DEL EMPLEADO A ELIMINAR: ");
+							codigo10 = sc.nextInt();
+						} catch (Exception e) {
+							salir10 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir10);
+
+					//Mismo metodo que usa para eliminar articulos, pero ahora elimina empleados segun su codigo
+					empleadoDB.eliminar(codigo10);
+
+					do {
+						valoresMenu = Menu.volverSubmenu("1. ELIMINAR OTRO EMPLEADO");
+						salirSubMenu10 = valoresMenu.isSalirSubMenu();
+						salirCase10 = valoresMenu.isSalirCase();
+						salirMenuPrincipal = valoresMenu.isSalirMenuPrincipal();
+					} while (salirSubMenu10);
+				} while (salirCase10);
+				break;
+
+			case 11: // Actualizar empleado
+				boolean salirSubMenu11 = false;
+				boolean salir11;
+				int codigo11 = 0;
+				boolean salirCase11 = false;
+				do {
+					do {
+						salir11 = false;
+						try {
+							System.out.print("INGRESE CODIGO DEL EMPLEADO A ACTUALIZAR: ");
+							codigo11 = sc.nextInt();
+						} catch (Exception e) {
+							salir11 = true;
+							System.err.println("\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+						}
+						sc.nextLine();
+					} while (salir11);
+
+					// Metodo para mostrar los datos del empleado a actualizar
+					boolean validador = empleadoDB.verArticuloYUsuario(codigo11);
+
+					if (validador) {
+						do {
+							salirCase11 = false;
+							int opcion11 = 0;
+							try {
+								System.out.println("\n1. ACTUALIZAR NOMBRE.");
+								System.out.println("2. ACTUALIZAR APELLIDO.");
+								System.out.println("3. ACTUALIZAR CARGO.");
+								System.out.println("4. ACTUALIZAR DNI.");
+								System.out.println("5. VOLVER AL MENU");
+								opcion11 = sc.nextInt();
+
+								if (opcion11 == 1) {
+									sc.nextLine();
+									System.out.print("INGRESE NUEVO NOMBRE: ");
+									String nuevoNombre = sc.nextLine();
+									//Meotodo para actualizar el nombre del empleado en la base de datos
+									empleadoDB.actualizarArticulosYUsuarios(nuevoNombre, codigo11, opcion11);
+									salirSubMenu11 = true;
+									salirCase11 = true;
+
+								} else if (opcion11 == 2) {
+
+									System.out.print("INGRESE NUEVO APELLIDO: ");
+									sc.nextLine();
+									String nuevoApellido = sc.nextLine();
+									//Mismo metodo que el anterior pero ahora actualiza el apellido del empleado en la base de datos
+									empleadoDB.actualizarArticulosYUsuarios(nuevoApellido, codigo11, opcion11);
+									salirSubMenu11 = true;
+									salirCase11 = true;
+
+								} else if (opcion11 == 3) {
+									sc.nextLine();
+									System.out.print("INGRESE NUEVO CARGO: ");
+									String nuevoCargo = sc.nextLine();
+									//Mismo metodo que el anterior pero ahora actualiza el cargo del empleado en la base de datos
+									empleadoDB.actualizarArticulosYUsuarios(nuevoCargo, codigo11, opcion11);
+									salirSubMenu11 = true;
+									salirCase11 = true;
+
+								} else if (opcion11 == 4) {
+									try {
+										System.out.print("INGRESE NUEVO NUMERO DE DNI: ");
+										int nuevoDNI = sc.nextInt();
+										//Mismo metodo que el anterior pero ahora actualiza el DNI del empleado en la base de datos
+										empleadoDB.actualizarArticulosYUsuarios(nuevoDNI, codigo11, opcion11);
+									} catch (Exception e) {
+										System.err.println(
+												"\n" + "DATO ERRONEO, SOLO SE PERMITEN NUMEROS ENTEROS..." + "\n");
+									} finally {
+										salirSubMenu11 = true;
+										salirCase11 = true;
+									}
+								} else if (opcion11 == 5) {
+									salirSubMenu11 = false;
+									salirMenuPrincipal = true;
+								} else {
+									throw new Exception();
+								}
+							} catch (Exception e) {
+								sc.nextLine();
+								salirMenuPrincipal = true;
+								salirSubMenu11 = true;
+								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 5");
+							}
+						} while (salirSubMenu11);
+					} else {
+						salirMenuPrincipal = Menu.volverMenu();
+					}
+				} while (salirCase11);
+				break;
+
+			case 12: //Ver lista de empleados
+				//Metodo para ver los articulos o empleados registrados en la base de datos, en este caso son los empleados
+				empleadoDB.verListadoArticulosYUsuarios();
+				salirMenuPrincipal = Menu.volverMenu();
+				break;
+				
+			case 13: //Salir del programa
+				System.out.println("PROGRAMA CERRADO....");
+				salirMenuPrincipal = false;
+				break;
+
+			default:
+				break;
+			}
+		} while (salirMenuPrincipal);
+		sc.close();
+	}
+}
