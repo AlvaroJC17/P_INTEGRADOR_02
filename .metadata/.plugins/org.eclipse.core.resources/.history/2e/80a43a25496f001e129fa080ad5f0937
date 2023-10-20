@@ -313,6 +313,7 @@ public class MainApp {
 									throw new Exception();
 								}
 							} catch (Exception e) {
+								sc.nextLine();
 								salirMenuPrincipal = true;
 								salirSubMenu5 = true;
 								System.err.println("\n" + "SOLO SE PERMITEN NUMEROS ENTRE 1 Y 4");
@@ -518,6 +519,7 @@ public class MainApp {
 									throw new Exception();
 								}
 							} catch (Exception e) {
+								sc.nextLine();
 								salirMenuPrincipal = true;
 								salirSubMenu11 = true;
 								System.err.println("SOLO SE PERMITEN NUMEROS ENTRE 1 Y 5");
